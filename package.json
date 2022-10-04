@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "",
   "main": "s.js",
+  "type": "module",
   "scripts": {
     "app": "node app.js"
   },

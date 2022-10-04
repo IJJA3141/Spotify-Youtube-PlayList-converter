@@ -1,0 +1,14 @@
+{
+    "name": "spotify",
+
+    "accesUrl0": "https://accounts.spotify.com/authorize?client_id=",
+    "accesUrl1": "&response_type=code&redirect_uri=",
+    "accesUrl2": "&show_dialog=true&scope=user-library-read",
+
+    "accesUrl": "",
+
+    "searchUrl": "https://api.spotify.com/v1/me/tracks",
+    "tokenUrl": "https://accounts.spotify.com/api/token",
+
+    "clientId": ""
+}
