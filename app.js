@@ -1,4 +1,5 @@
 import getCode from "./my_library/getCode.js"
+import code from "./my_library/getCode.js"
 
 import * as dotenv from "dotenv"
 dotenv.config({ path: "./.env" });
@@ -8,11 +9,6 @@ import express from "express";
 const app = express();
 
 const redirectUri = "http://127.0.0.1:" + process.env.PORT;
-
-var v
-
-const spotifyCode = new Promise((resolve) => {resolve(v)})
-//const youtubeCode = new Promise
 
 import spotify from "./data/spotify.json" assert { type: 'json' };
 import youtube from "./data/youtube.json" assert { type: 'json' };
@@ -24,6 +20,9 @@ youtube.clientId = process.env.YOUTUBE_CLIENT_ID
 
 spotify.accesUrl = spotify.accesUrl0 + spotify.clientId + spotify.accesUrl1 + encodeURI(redirectUri + "/loginresponse/spotify") + spotify.accesUrl2
 youtube.accesUrl = youtube.accesUrl0 + encodeURI(redirectUri + "/loginresponse/youtube") + youtube.accesUrl1 + youtube.clientId + youtube.accesUrl2
+
+var spotifyCode = new code()
+var youtubeCode = new code()
 
 //app
 app.listen(process.env.PORT);
@@ -48,8 +47,7 @@ function getCodeSpotify(req_url) {
 
 app.get("/loginresponse/spotify", (req, res) => {
   console.log("J suis la")
-  v = (getCodeSpotify(req.url))
-  spotifyCode.resolve
+  spotifyCode.resolve(getCodeSpotify(req.url))
   setTimeout(() => {
     res.redirect("/exit");
   }, 100);
@@ -63,6 +61,9 @@ app.get("/loginresponse/youtube", (req, res) => {
 });
 
 //getCode(youtube, redirectUri)
-getCode(spotify, redirectUri)
+async function getToken()
+{
+  getCode(spotify, spotifyCode).then(result => {console.log(result)})
+}
 
-console.log(await spotifyCode)
+getToken()

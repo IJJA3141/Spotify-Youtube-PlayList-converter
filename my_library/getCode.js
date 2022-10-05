@@ -1,6 +1,15 @@
 import open from "open"
-const getCode = (obj) => {
-    console.log(obj.accesUrl)
-    open(obj.accesUrl)
+
+export class code {
+    constructor() {
+        this.Promise = new Promise((resolve, reject) => {
+            this.resolve = resolve;
+            this.reject = reject;
+        });
+    }
 }
-export default getCode
+
+export default function getCode(obj, prom){
+    open(obj.accesUrl)
+    return prom.promise
+}
