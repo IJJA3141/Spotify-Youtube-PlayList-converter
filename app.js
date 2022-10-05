@@ -1,38 +1,42 @@
-import getCode from "./my_library/getCode.js"
-import code from "./my_library/getCode.js"
+// my import
+import { spotify, youtube } from "./my_library/implementProtectedInfo.js";
+import {getTokens} from "./my_library/getToken.js"
+import {code} from "./my_library/getCode.js"
 
+// import
+import express from "express";
 import * as dotenv from "dotenv"
 dotenv.config({ path: "./.env" });
 
-import express from "express";
+// create variables
+let spotifyCode = new code()
+let youtubeCode = new code()
 
+// app
 const app = express();
-
-const redirectUri = "http://127.0.0.1:" + process.env.PORT;
-
-import spotify from "./data/spotify.json" assert { type: 'json' };
-import youtube from "./data/youtube.json" assert { type: 'json' };
-
-spotify.clientId = process.env.SPOTIFY_CLIENT_ID
-
-youtube.APIKey = process.env.YOUTUBE_API_KEY
-youtube.clientId = process.env.YOUTUBE_CLIENT_ID
-
-spotify.accesUrl = spotify.accesUrl0 + spotify.clientId + spotify.accesUrl1 + encodeURI(redirectUri + "/loginresponse/spotify") + spotify.accesUrl2
-youtube.accesUrl = youtube.accesUrl0 + encodeURI(redirectUri + "/loginresponse/youtube") + youtube.accesUrl1 + youtube.clientId + youtube.accesUrl2
-
-var spotifyCode = new code()
-var youtubeCode = new code()
-
-//app
 app.listen(process.env.PORT);
 app.set("view engine", "ejs");
 
-//exit
 app.get("/exit", (req, res) => {
   res.render("exit");
 });
 
+app.get("/loginresponse/spotify", (req, res) => {
+  spotifyCode.resolve(getCodeSpotify(req.url))
+  setTimeout(() => {
+    res.redirect("/exit");
+  }, 1000);
+});
+
+app.get("/loginresponse/youtube", (req, res) => {
+  youtubeCode.resolve(getCodeYoutube(req.url));
+  setTimeout(() => {
+    res.redirect("/exit");
+  }, 1000);
+});
+
+
+// a voir
 function getCodeYoutube(req_url) {
   let code = null;
   code = req_url.substr(req_url.search(/code/) + 5, req_url.length);
@@ -45,25 +49,5 @@ function getCodeSpotify(req_url) {
   return code;  
 }
 
-app.get("/loginresponse/spotify", (req, res) => {
-  console.log("J suis la")
-  spotifyCode.resolve(getCodeSpotify(req.url))
-  setTimeout(() => {
-    res.redirect("/exit");
-  }, 100);
-});
-
-app.get("/loginresponse/youtube", (req, res) => {
-  youtube_code = getCodeYoutube(req.url);
-  setTimeout(() => {
-    res.redirect("/exit");
-  }, 100);
-});
-
-//getCode(youtube, redirectUri)
-async function getToken()
-{
-  getCode(spotify, spotifyCode).then(result => {console.log(result)})
-}
-
-getToken()
+getTokens(spotify, spotifyCode)
+getTokens(youtube, youtubeCode)

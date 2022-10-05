@@ -1,15 +1,18 @@
+import {constructUrl} from "./implementProtectedInfo.js"
 import open from "open"
 
-export class code {
+class code {
     constructor() {
-        this.Promise = new Promise((resolve, reject) => {
-            this.resolve = resolve;
-            this.reject = reject;
+        this.promise = new Promise((resolve, reject)=> {
+            this.reject = reject
+            this.resolve = resolve
         });
     }
 }
 
-export default function getCode(obj, prom){
-    open(obj.accesUrl)
+function getCode(obj, prom){
+    open(constructUrl(obj.accesUrl))
     return prom.promise
 }
+
+export {code, getCode}
