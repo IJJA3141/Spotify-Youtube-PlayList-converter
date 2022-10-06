@@ -8,7 +8,6 @@ Array.prototype.insert = function ( index, ...items ) {
 function constructUrl(arr){
     let url = arr[0]
     for(let i = 1; i < arr.length; i++){
-        console.log(arr[i])
         url += arr[i]
     }
     return url
@@ -20,11 +19,11 @@ import spotify from "../data/spotify.json" assert { type: 'json' };
 import youtube from "../data/youtube.json" assert { type: 'json' };
 
 spotify.clientId = process.env.SPOTIFY_CLIENT_ID
-spotify.cleintSecret = process.env.SPOTIFY_CLIENT_SECRET
+spotify.clientSecret = process.env.SPOTIFY_CLIENT_SECRET
 
 youtube.APIKey = process.env.YOUTUBE_API_KEY
 youtube.clientId = process.env.YOUTUBE_CLIENT_ID
-youtube.cleintSecret = process.env.YOUTUBE_CLIENT_SECRET
+youtube.clientSecret = process.env.YOUTUBE_CLIENT_SECRET
 
 spotify.accesUrl.insert(1, spotify.clientId)
 spotify.accesUrl.insert(3, encodeURI(redirectUri + "/loginresponse/spotify"))
