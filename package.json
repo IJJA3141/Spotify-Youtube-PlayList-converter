@@ -1,23 +1,30 @@
 {
-  "name": "poireau-pigeon",
+  "name": "spotify-youtube-playlist-converter",
   "version": "1.0.0",
   "description": "",
-  "main": "s.js",
+  "main": "./compiled/main.js",
   "scripts": {
-    "app": "node app.js"
+    "u": "tsc -p ./test/tsconfig.json && node ./test/test/test/test.js",
+    "start": "npm run build && electron .",
+    "build": "tsc",
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "keywords": [],
-  "author": "",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/IJJA3141/Spotify-Youtube-PlayList-converter.git"
+  },
+  "keywords": [
+    "Spotify",
+    "Youtube"
+  ],
+  "author": "IJJA3141",
   "license": "ISC",
-  "dependencies": {
-    "config": "^3.3.7",
-    "dotenv": "^16.0.1",
-    "ejs": "^3.1.8",
-    "express": "^4.18.1",
-    "open": "^8.4.0",
-    "xmlhttprequest": "^1.8.0"
+  "bugs": {
+    "url": "https://github.com/IJJA3141/Spotify-Youtube-PlayList-converter/issues"
   },
+  "homepage": "https://github.com/IJJA3141/Spotify-Youtube-PlayList-converter#readme",
   "devDependencies": {
-    "nodemon": "^2.0.19"
+    "@types/electron": "^1.6.10",
+    "electron": "^25.2.0"
   }
 }
