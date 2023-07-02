@@ -1,14 +1,14 @@
-import {BrowserWindow, app, ipcMain} from "electron";
+import {BrowserWindow, app} from "electron";
+const path = require('path')
 
-let mainWindows : BrowserWindow;
-
-app.on("ready", createWindows)
-
-function createWindows ():void {
-  mainWindows = new BrowserWindow({
-    width: 900, height: 600,
-    webPreferences: {
-      preload: __dirname + "/preload.js"
+function createWindow(){
+  const win = new BrowserWindow({
+    width: 800,
+    height: 600,
+    webPreferences:{
+      nodeIntegration: true,
     }
   })
+
+  win.loadFile(path.join(__dirname, '../main.html'));
 }

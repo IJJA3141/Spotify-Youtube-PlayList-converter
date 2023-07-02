@@ -20,8 +20,8 @@ class song_list {
     return;
   }
 
-  public test():void {
-    this.array_song.push({"completed":true,"id":"876867"});
+  public test(): void {
+    this.array_song.push({ "completed": true, "id": "876867" });
     return;
   }
 
