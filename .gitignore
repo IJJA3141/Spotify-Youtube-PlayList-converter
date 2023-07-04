@@ -1,5 +1,6 @@
 # compiling
-*.js
+./dir/*
+./playlists/*
 
 # Logs
 logs

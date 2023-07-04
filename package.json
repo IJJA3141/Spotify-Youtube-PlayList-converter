@@ -1,30 +1,46 @@
 {
-  "name": "spotify-youtube-playlist-converter",
-  "version": "1.0.0",
-  "description": "",
-  "main": "./compiled/main.js",
-  "scripts": {
-    "u": "tsc -p ./test/tsconfig.json && node ./test/test/test/test.js",
-    "start": "npm run build && electron .",
-    "build": "tsc",
-    "test": "echo \"Error: no test specified\" && exit 1"
+  "dependencies": {
+    "electron": "^25.2.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-scripts": "^5.0.1"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/IJJA3141/Spotify-Youtube-PlayList-converter.git"
-  },
-  "keywords": [
-    "Spotify",
-    "Youtube"
-  ],
-  "author": "IJJA3141",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/IJJA3141/Spotify-Youtube-PlayList-converter/issues"
-  },
-  "homepage": "https://github.com/IJJA3141/Spotify-Youtube-PlayList-converter#readme",
   "devDependencies": {
     "@types/electron": "^1.6.10",
-    "electron": "^25.2.0"
+    "@types/react": "^18.2.14",
+    "@types/react-dom": "^18.2.6",
+    "concurrently": "^8.2.0",
+    "cross-env": "^7.0.3",
+    "electron-builder": "^24.4.0",
+    "electron-is-dev": "^2.0.0",
+    "react-devtools": "^4.27.8",
+    "wait-on": "^7.0.1"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "eject": "react-scripts eject",
+    "electron:dev": "concurrently \"cross-env BROWSER=none yarn start\" \"wait-on http://127.0.0.1:3000 && tsc -p electron -w\" \"wait-on http://127.0.0.1:3000 && tsc -p electron && electron .\"",
+    "electron:build": "yarn build && tsc -p electron && electron-builder",
+    "electron:dist": "yarn build && tsc -p electron && electron-builder --mac --dir"
+  },
+  "name": "spotify-youtube-playlist-converter",
+  "version": "1.0.0",
+  "main": "./build/electron/main.js",
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
   }
 }

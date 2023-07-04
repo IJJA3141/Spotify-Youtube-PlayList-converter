@@ -1,0 +1,14 @@
+// to do 
+
+all
+
+
+// view
+
+logged in ? --> true : false
+
+true:
+  load saved playlists
+
+false:
+  prompt loggin --> go to true
