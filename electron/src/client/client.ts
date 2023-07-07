@@ -1,8 +1,8 @@
 import 'dotenv'
 
-interface client {
-  id:string,
-  secret:string,
+interface client{
+  id:string;
+  secret:string;
 }
 
 const CLIENT:client = {
@@ -10,4 +10,4 @@ const CLIENT:client = {
   secret: process.env.SPOTIFY_CLIENT_SECRET as string
 }
 
-export default CLIENT;
+export default CLIENT
