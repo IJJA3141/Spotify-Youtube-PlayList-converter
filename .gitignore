@@ -1,3 +1,6 @@
-./build/*
-./private/*
-./node_modules/*
+private/
+node_modules/
+build/
+/build
+/node_modules
+/private
