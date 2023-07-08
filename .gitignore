@@ -1,6 +1,3 @@
-.idea
-node_modules
-dist
-
-*.log
-npm-debug.log*
+./build/*
+./private/*
+./node_modules/*

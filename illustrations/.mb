@@ -1,0 +1,28 @@
+#│  
+#├──
+#└──
+
+#spotify-youtube-converter tree view:
+
+├── private
+│   ├── .env
+│   └── playlists
+│       └── [...playlists.json]
+├── public
+│   └── index.html
+└── src
+    ├── index.html
+    ├── app
+    │   ├── lib
+    │   │   └── ipc-service.ts
+    │   └── views
+    │       └── app.tsx
+    ├── shared
+    │   └── ipc-request.ts
+    └── electron
+        ├── main.ts
+        └── lib
+            └── ipc
+                ├── ipc-channel-interface.ts
+                └── channels
+                    └── system-info-channel.ts

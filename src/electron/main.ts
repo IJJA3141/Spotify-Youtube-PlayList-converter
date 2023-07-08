@@ -1,35 +1,35 @@
-import {app, BrowserWindow, ipcMain} from 'electron';
-import {IpcChannelInterface} from "./IPC/IpcChannelInterface";
-import {SystemInfoChannel} from "./IPC/SystemInfoChannel";
+import { app, BrowserWindow, ipcMain } from 'electron';
+import IpcChannelInterface from "./lib/ipc/ipc-channel-interface";
+import SystemInfoChannel from "./lib/ipc/channels/system-info-channel";
 import * as isDev from 'electron-is-dev'
 import * as path from 'path'
 
 class Main {
   //@ts-ignore
-  private mainWindow: BrowserWindow;
+  private mainWindow_: BrowserWindow;
 
-  public init(ipcChannels: IpcChannelInterface[]) {
-    app.on('ready', this.createWindow);
-    app.on('window-all-closed', this.onWindowAllClosed);
-    app.on('activate', this.onActivate);
+  public init(_ipcChannels: IpcChannelInterface[]) {
+    app.on('ready', this.createWindow_);
+    app.on('window-all-closed', this.onWindowAllClosed_);
+    app.on('activate', this.onActivate_);
 
-    this.registerIpcChannels(ipcChannels);
+    this.registerIpcChannels_(_ipcChannels);
   }
 
-  private onWindowAllClosed() {
+  private onWindowAllClosed_() {
     if (process.platform !== 'darwin') {
       app.quit();
     }
   }
 
-  private onActivate() {
-    if (!this.mainWindow) {
-      this.createWindow();
+  private onActivate_() {
+    if (!this.mainWindow_) {
+      this.createWindow_();
     }
   }
 
-  private createWindow() {
-    this.mainWindow = new BrowserWindow({
+  private createWindow_() {
+    this.mainWindow_ = new BrowserWindow({
       height: 600,
       width: 800,
       title: `Yet another Electron Application`,
@@ -38,19 +38,19 @@ class Main {
       }
     });
 
-    this.mainWindow.webContents.openDevTools();
+    this.mainWindow_.webContents.openDevTools();
 
     //this.mainWindow.loadFile('../../public/index.html')
-    
-    this.mainWindow.loadURL(
+
+    this.mainWindow_.loadURL(
       isDev
-      ? 'http://localhost:3000'
-      : `file://${path.join(__dirname, '../../public/index.html')}`
+        ? 'http://localhost:3000'
+        : `file://${path.join(__dirname, '../../public/index.html')}`
     );
   }
 
-  private registerIpcChannels(ipcChannels: IpcChannelInterface[]) {
-    ipcChannels.forEach(channel => ipcMain.on(channel.getName(), (event, request) => channel.handle(event, request)));
+  private registerIpcChannels_(_ipcChannels: IpcChannelInterface[]) {
+    _ipcChannels.forEach(_channel => ipcMain.on(_channel.getName(), (_event, _request) => _channel.handle(_event, _request)));
   }
 }
 

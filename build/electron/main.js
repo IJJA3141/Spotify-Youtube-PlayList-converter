@@ -1,4 +1,7 @@
 "use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 var __importStar = (this && this.__importStar) || function (mod) {
     if (mod && mod.__esModule) return mod;
     var result = {};
@@ -8,28 +11,28 @@ var __importStar = (this && this.__importStar) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const electron_1 = require("electron");
-const SystemInfoChannel_1 = require("./IPC/SystemInfoChannel");
+const system_info_channel_1 = __importDefault(require("./lib/ipc/channels/system-info-channel"));
 const isDev = __importStar(require("electron-is-dev"));
 const path = __importStar(require("path"));
 class Main {
-    init(ipcChannels) {
-        electron_1.app.on('ready', this.createWindow);
-        electron_1.app.on('window-all-closed', this.onWindowAllClosed);
-        electron_1.app.on('activate', this.onActivate);
-        this.registerIpcChannels(ipcChannels);
+    init(_ipcChannels) {
+        electron_1.app.on('ready', this.createWindow_);
+        electron_1.app.on('window-all-closed', this.onWindowAllClosed_);
+        electron_1.app.on('activate', this.onActivate_);
+        this.registerIpcChannels_(_ipcChannels);
     }
-    onWindowAllClosed() {
+    onWindowAllClosed_() {
         if (process.platform !== 'darwin') {
             electron_1.app.quit();
         }
     }
-    onActivate() {
-        if (!this.mainWindow) {
-            this.createWindow();
+    onActivate_() {
+        if (!this.mainWindow_) {
+            this.createWindow_();
         }
     }
-    createWindow() {
-        this.mainWindow = new electron_1.BrowserWindow({
+    createWindow_() {
+        this.mainWindow_ = new electron_1.BrowserWindow({
             height: 600,
             width: 800,
             title: `Yet another Electron Application`,
@@ -37,17 +40,17 @@ class Main {
                 nodeIntegration: true
             }
         });
-        this.mainWindow.webContents.openDevTools();
+        this.mainWindow_.webContents.openDevTools();
         //this.mainWindow.loadFile('../../public/index.html')
-        this.mainWindow.loadURL(isDev
+        this.mainWindow_.loadURL(isDev
             ? 'http://localhost:3000'
             : `file://${path.join(__dirname, '../../public/index.html')}`);
     }
-    registerIpcChannels(ipcChannels) {
-        ipcChannels.forEach(channel => electron_1.ipcMain.on(channel.getName(), (event, request) => channel.handle(event, request)));
+    registerIpcChannels_(_ipcChannels) {
+        _ipcChannels.forEach(_channel => electron_1.ipcMain.on(_channel.getName(), (_event, _request) => _channel.handle(_event, _request)));
     }
 }
 (new Main()).init([
-    new SystemInfoChannel_1.SystemInfoChannel()
+    new system_info_channel_1.default()
 ]);
 //# sourceMappingURL=main.js.map

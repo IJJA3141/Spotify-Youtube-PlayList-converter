@@ -1,15 +1,12 @@
 {
-  "name": "electron-ts",
-  "version": "1.0.0",
-  "description": "Yet another Electron application",
+  "name": "spotify-youtube-converter",
   "scripts": {
     "start": "react-scripts start",
     "electron:dev": "concurrently \"cross-env BROWSER=none yarn start\" \"wait-on http://127.0.0.1:3000 && tsc -p ./src/electron -w\" \"wait-on http://127.0.0.1:3000 && tsc -p ./src/electron && electron ./build/electron/main.js \"",
     "electron:build": "yarn build && tsc -p electron && electron-builder",
     "electron:dist": "yarn build && tsc -p electron && electron-builder --mac --dir"
   },
-  "author": "Kevin Hirczy <https://nehalist.io>",
-  "license": "MIT",
+  "author": "IJJA",
   "devDependencies": {
     "@types/electron": "^1.6.10",
     "@types/node": "^20.4.1",
