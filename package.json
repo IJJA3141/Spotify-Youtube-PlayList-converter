@@ -21,14 +21,6 @@
     "react-devtools": "^4.27.8",
     "wait-on": "^7.0.1"
   },
-  "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "eject": "react-scripts eject",
-    "electron:dev": "concurrently \"cross-env BROWSER=none yarn start\" \"wait-on http://127.0.0.1:3000 && tsc -p electron -w\" \"wait-on http://127.0.0.1:3000 && tsc -p electron && electron .\"",
-    "electron:build": "yarn build && tsc -p electron && electron-builder",
-    "electron:dist": "yarn build && tsc -p electron && electron-builder --mac --dir"
-  },
   "name": "spotify-youtube-playlist-converter",
   "version": "1.0.0",
   "main": "./build/electron/main.js",
@@ -51,5 +43,13 @@
   "browser": {
     "path": false,
     "os": false
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "eject": "react-scripts eject",
+    "electron:dev": "concurrently \"cross-env BROWSER=none yarn start\" \"wait-on http://127.0.0.1:3000 && tsc -p ./src/electron -w\" \"wait-on http://127.0.0.1:3000 && tsc -p ./src/electron && electron .\"",
+    "electron:build": "yarn build && tsc -p ./src/electron && electron-builder",
+    "electron:dist": "yarn build && tsc -p ./src/electron && electron-builder --mac --dir"
   }
 }

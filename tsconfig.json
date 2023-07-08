@@ -18,13 +18,9 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "noEmit": true,
-    "jsx": "react-jsx",
-    "path": {
-      "crypto": ["node_module/crypto-browserify","node_modules/crypto-js"],
-      "stream": ["node_module/stream-browserify"]
-    }
+    "jsx": "react-jsx"
   },
   "include": [
-    "src"
+    "./src/app"
   ]
 }

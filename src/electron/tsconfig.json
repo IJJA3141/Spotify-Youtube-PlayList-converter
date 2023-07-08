@@ -5,7 +5,7 @@
     "esModuleInterop": true,
     "sourceMap": true,
     "strict": true,
-    "outDir": "../build",
+    "outDir": "./../../build",
     "rootDir": "../",
     "noEmitOnError": true,
     "typeRoots": ["node_modules/@types", "./types"]

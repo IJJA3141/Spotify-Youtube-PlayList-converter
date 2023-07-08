@@ -1,6 +1,7 @@
-# compiling
-./dir/*
-./playlists/*
+# --
+./build/*
+./node_modules/*
+./private/*
 
 # Logs
 logs

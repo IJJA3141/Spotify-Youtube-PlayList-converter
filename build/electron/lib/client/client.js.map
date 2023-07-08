@@ -1,0 +1,1 @@
+{"version":3,"file":"client.js","sourceRoot":"","sources":["../../../../src/electron/lib/client/client.ts"],"names":[],"mappings":";;AAAA,kBAAe;AAOf,MAAM,MAAM,GAAU;IACpB,EAAE,EAAC,OAAO,CAAC,GAAG,CAAC,iBAA2B;IAC1C,MAAM,EAAE,OAAO,CAAC,GAAG,CAAC,qBAA+B;CACpD,CAAA;AAED,kBAAe,MAAM,CAAA"}
