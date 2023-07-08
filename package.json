@@ -1,33 +1,33 @@
 {
-  "dependencies": {
-    "crypto-browserify": "^3.12.0",
-    "dotenv": "^16.3.1",
-    "electron": "^25.2.0",
-    "os": "^0.1.2",
-    "path": "^0.12.7",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
-    "react-scripts": "^5.0.1",
-    "stream-browserify": "^3.0.0"
+  "name": "electron-ts",
+  "version": "1.0.0",
+  "description": "Yet another Electron application",
+  "scripts": {
+    "start": "react-scripts start",
+    "electron:dev": "concurrently \"cross-env BROWSER=none yarn start\" \"wait-on http://127.0.0.1:3000 && tsc -p ./src/electron -w\" \"wait-on http://127.0.0.1:3000 && tsc -p ./src/electron && electron ./build/electron/main.js \"",
+    "electron:build": "yarn build && tsc -p electron && electron-builder",
+    "electron:dist": "yarn build && tsc -p electron && electron-builder --mac --dir"
   },
+  "author": "Kevin Hirczy <https://nehalist.io>",
+  "license": "MIT",
   "devDependencies": {
     "@types/electron": "^1.6.10",
+    "@types/node": "^20.4.1",
     "@types/react": "^18.2.14",
     "@types/react-dom": "^18.2.6",
     "concurrently": "^8.2.0",
     "cross-env": "^7.0.3",
+    "electron": "^7.1.5",
     "electron-builder": "^24.4.0",
     "electron-is-dev": "^2.0.0",
-    "react-devtools": "^4.27.8",
+    "typescript": "^3.7.3",
     "wait-on": "^7.0.1"
   },
-  "name": "spotify-youtube-playlist-converter",
-  "version": "1.0.0",
-  "main": "./build/electron/main.js",
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "description": "",
+  "dependencies": {
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-scripts": "^5.0.1"
+  },
   "browserslist": {
     "production": [
       ">0.2%",
@@ -39,17 +39,5 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
-  },
-  "browser": {
-    "path": false,
-    "os": false
-  },
-  "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "eject": "react-scripts eject",
-    "electron:dev": "concurrently \"cross-env BROWSER=none yarn start\" \"wait-on http://127.0.0.1:3000 && tsc -p ./src/electron -w\" \"wait-on http://127.0.0.1:3000 && tsc -p ./src/electron && electron .\"",
-    "electron:build": "yarn build && tsc -p ./src/electron && electron-builder",
-    "electron:dist": "yarn build && tsc -p ./src/electron && electron-builder --mac --dir"
   }
 }

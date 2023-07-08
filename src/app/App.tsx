@@ -1,20 +1,20 @@
-import IpcService from './ipc/ipc-service'
+import { IpcService } from "./IpcService";
+import * as React from 'react'
 
 const ipc = new IpcService();
 
-async function click():Promise<void>{
+const func = async () => {
   const t = await ipc.send<{ kernel: string }>('system-info');
-  console.log(t.kernel)
-  return new Promise(()=>{});
-};
+  console.log(t.kernel);
+}
 
 function App() {
   return (
     <div className='App'>
-      <button onClick={click}>os info</button>
       <p>
         Hello World!
       </p>
+      <button onClick={func}>\n</button>
     </div>
   );
 }

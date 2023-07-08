@@ -1,12 +1,20 @@
 import {app, BrowserWindow, ipcMain} from 'electron';
-import {IpcChannelInterface} from "./lib/ipc/IpcChannelInterface";
-import {SystemInfoChannel} from "./lib/ipc/SystemInfoChannel";
-import * as path from 'path'
+import {IpcChannelInterface} from "./IPC/IpcChannelInterface";
+import {SystemInfoChannel} from "./IPC/SystemInfoChannel";
 import * as isDev from 'electron-is-dev'
+import * as path from 'path'
 
 class Main {
-  // @ts-ignore
+  //@ts-ignore
   private mainWindow: BrowserWindow;
+
+  public init(ipcChannels: IpcChannelInterface[]) {
+    app.on('ready', this.createWindow);
+    app.on('window-all-closed', this.onWindowAllClosed);
+    app.on('activate', this.onActivate);
+
+    this.registerIpcChannels(ipcChannels);
+  }
 
   private onWindowAllClosed() {
     if (process.platform !== 'darwin') {
@@ -31,24 +39,21 @@ class Main {
     });
 
     this.mainWindow.webContents.openDevTools();
+
+    //this.mainWindow.loadFile('../../public/index.html')
     
-    this.mainWindow.loadURL(isDev
+    this.mainWindow.loadURL(
+      isDev
       ? 'http://localhost:3000'
       : `file://${path.join(__dirname, '../../public/index.html')}`
-    )
+    );
   }
 
   private registerIpcChannels(ipcChannels: IpcChannelInterface[]) {
     ipcChannels.forEach(channel => ipcMain.on(channel.getName(), (event, request) => channel.handle(event, request)));
   }
-
-  public init(ipcChannels: IpcChannelInterface[]) {
-    app.on('ready', this.createWindow);
-    app.on('window-all-closed', this.onWindowAllClosed);
-    app.on('activate', this.onActivate);
-
-    this.registerIpcChannels(ipcChannels);
-  }
 }
 
-(new Main).init([new SystemInfoChannel()]);
+(new Main()).init([
+  new SystemInfoChannel()
+]);

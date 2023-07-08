@@ -9,8 +9,8 @@ class SystemInfoChannel {
         if (!request.responseChannel) {
             request.responseChannel = `${this.getName()}_response`;
         }
-        event.sender.send(request.responseChannel, { kernel: (0, child_process_1.execSync)('uname -a').toString() });
+        event.sender.send(request.responseChannel, { kernel: child_process_1.execSync('systeminfo').toString() });
     }
 }
-exports.default = SystemInfoChannel;
-//# sourceMappingURL=system-info-channel.js.map
+exports.SystemInfoChannel = SystemInfoChannel;
+//# sourceMappingURL=SystemInfoChannel.js.map
