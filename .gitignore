@@ -1,6 +1,4 @@
-private/
-node_modules/
-build/
 /build
 /node_modules
-/private
+/private/playlists/*
+*.env
