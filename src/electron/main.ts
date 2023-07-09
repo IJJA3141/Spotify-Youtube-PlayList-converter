@@ -1,6 +1,7 @@
 import { app, BrowserWindow, ipcMain } from 'electron';
 import IpcChannelInterface from "./lib/ipc/ipc-channel-interface";
 import SystemInfoChannel from "./lib/ipc/channels/system-info-channel";
+import ClientChannel from './lib/ipc/channels/client-channel';
 import * as isDev from 'electron-is-dev'
 import * as path from 'path'
 
@@ -55,5 +56,6 @@ class Main {
 }
 
 (new Main()).init([
-  new SystemInfoChannel()
+  new SystemInfoChannel(),
+  new ClientChannel(),
 ]);

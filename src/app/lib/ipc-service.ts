@@ -22,6 +22,7 @@ class IpcService {
 
   private initializeIpcRenderer_() {
     if (!window || !window.process || !window.require) {
+      console.log(`all should be set to false:\nwindow:${!window}\nprocess:${!window.process}\nrequire:${!window.require}`)
       throw new Error(`Unable to require renderer process`);
     }
     this.ipcRenderer_ = window.require('electron').ipcRenderer;
