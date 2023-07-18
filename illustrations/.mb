@@ -3,26 +3,36 @@
 #└──
 
 #spotify-youtube-converter tree view:
-
-├── private
+root
+│
+├── frontend
+│   ├── public
+│   │   ├── index.html
+│   │   ├── logo.png
+│   │   └── logo.png
+│   └── src
+│       ├── index.css
+│       ├── index.tsx
+│       └── views
+│           └── app
+│               ├── logo.svg
+│               ├── App.css
+│               └── App.tsx
+│
+├── cache
 │   ├── .env
 │   └── playlists
-│       └── [...playlists.json]
-├── public
-│   └── index.html
-└── src
-    ├── index.html
-    ├── app
-    │   ├── lib
-    │   │   └── ipc-service.ts
-    │   └── views
-    │       └── app.tsx
-    ├── shared
-    │   └── ipc-request.ts
-    └── electron
+│        └── [playlist.json]
+│
+├── shared
+│   └── ipc-request.ts
+│
+└── backend
+    └── src
         ├── main.ts
-        └── lib
-            └── ipc
-                ├── ipc-channel-interface.ts
-                └── channels
-                    └── system-info-channel.ts
+        ├── preload
+        │   └── preload.ts
+        └── ipc
+            ├── ipc-channel-interface.ts
+            └── channels
+                └── [channel.ts]

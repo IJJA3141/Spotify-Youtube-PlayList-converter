@@ -1,39 +1,24 @@
 {
   "name": "spotify-youtube-converter",
-  "scripts": {
-    "start": "react-scripts start",
-    "electron:dev": "concurrently \"cross-env BROWSER=none yarn start\" \"wait-on http://127.0.0.1:3000 && tsc -p ./src/electron -w\" \"wait-on http://127.0.0.1:3000 && tsc -p ./src/electron && electron ./build/electron/main.js \"",
-    "electron:build": "yarn build && tsc -p electron && electron-builder",
-    "electron:dist": "yarn build && tsc -p electron && electron-builder --mac --dir"
-  },
   "author": "IJJA",
   "dependencies": {
     "dotenv": "^16.3.1",
     "electron": "^25.2.0",
-    "node-fetch": "^3.3.1",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
-    "react-scripts": "^5.0.1"
+    "electron-is-dev": "^2.0.0"
   },
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
+  "scripts": {
+    "frontend": "npm run start --workspaces=frontend",
+    "build": "tsc -p ./backend",
+    "electron:dev": "npm run build && concurrently \"electronmon ./build/backend/src/main.js\" \"npm run frontend\""
   },
   "devDependencies": {
+    "@types/node": "^20.4.1",
     "@types/react": "^18.2.14",
     "@types/react-dom": "^18.2.6",
     "concurrently": "^8.2.0",
-    "cross-env": "^7.0.3",
-    "electron-builder": "^24.4.0",
-    "electron-is-dev": "^2.0.0",
-    "wait-on": "^7.0.1"
-  }
+    "electronmon": "^2.0.2"
+  },
+  "workspaces": [
+    "frontend"
+  ]
 }
