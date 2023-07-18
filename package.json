@@ -1,0 +1,19 @@
+{
+  "name": "spotify-youtube-playlist-converter",
+  "version": "0.0.0",
+  "description": "Spotify to youtube playlist converter",
+  "scripts": {
+    "start": "tsc -p ./src/ && electron ./build/main.js"
+  },
+  "author": "IJJA3141",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/electron": "^1.6.10"
+  },
+  "Dependencies": {
+    "electron": "^25.3.0"
+  },
+  "dependencies": {
+    "dotenv": "^16.3.1"
+  }
+}
