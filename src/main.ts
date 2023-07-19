@@ -14,4 +14,5 @@ const spotifyClient: SpotifyClient = {
 
 app.on('ready', () => {
   const token: Token = new Token(spotifyClient)
+  token.get().then((_token) => { console.log(_token) })
 });
