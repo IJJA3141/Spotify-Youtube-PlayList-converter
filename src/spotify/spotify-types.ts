@@ -1,14 +1,27 @@
-interface SpotifyClient{
-  id:string,
-  secret:string,
+interface ImageObject {
+  url: string
+  height: number
+  width: number
 }
 
-interface SpotifyTokenResponse{
-  access_token:string,
-  token_type:string,
-  scope:string,
-  expires_in:number,
-  refresh_token:string
+interface SpotifyPlaylist {
+  id: string
+  name: string
+  owner: string
+  images: ImageObject[]
 }
 
-export {SpotifyClient, SpotifyTokenResponse}
+interface SpotifyClient {
+  id: string,
+  secret: string,
+}
+
+interface SpotifyTokenResponse {
+  access_token: string,
+  token_type: string,
+  scope: string,
+  expires_in: number,
+  refresh_token: string
+}
+
+export { SpotifyClient, SpotifyTokenResponse, ImageObject, SpotifyPlaylist }
