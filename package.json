@@ -3,7 +3,11 @@
   "version": "0.0.0",
   "description": "Spotify to youtube playlist converter",
   "scripts": {
-    "start": "tsc -p ./src/ && electron ./build/main.js"
+    "cp": "@powershell -NoProfile -ExecutionPolicy Unrestricted -Command cp ./src/ ./build/ -Filter *.html -Recurse -Force",
+    "rm": "@powershell -NoProfile -ExecutionPolicy Unrestricted -Command rm ./build/ -Recurse",
+    "build": "npm run rm && npm run cp && tsc -p ./src/ && tsc -p ./src/view/",
+    "electron": "electron ./build/main.js",
+    "start": "npm run build && npm electron"
   },
   "author": "IJJA3141",
   "license": "ISC",
