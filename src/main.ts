@@ -1,59 +1,55 @@
-import dotenv from 'dotenv'
-import path from 'path'
-import http from 'http'
+import { app, BrowserWindow, ipcMain, IpcMainEvent } from "electron";
+import path from "path";
 
-dotenv.config({ path: path.join(__dirname, '../appdata/.env') })
-import { app, BrowserWindow, ipcMain, IpcMainEvent } from 'electron'
-import { IIpcChannel, IpcRequest } from './electron/ipc/ipc-interfaces';
-import { playlist } from './types';
-import Spotify from './spotify/spotify'
+import Spotify from "./spotify/spotify";
 
-class Main {
-  private window_?: BrowserWindow;
+class MainProcess {
+  public test: string = "fjksda;fjdkl";
+
+  public window_?: BrowserWindow;
+  public spotify_: Spotify;
+  //private youtue: youtube
 
   public constructor() {
-    app.on('ready', this.create_)
-    app.on('window-all-closed', this.close_)
-    app.on('activate', this.activate_)
+    console.log(`1: ${Spotify.tesmorts}`);
+
+    this.spotify_ = new Spotify(this);
+
+    console.log(`2: ${Spotify.tesmorts}`);
+
+    app.on("ready", this.main_);
   }
 
-  public sendPlaylists(_playlists: playlist[]) {
-    this.window_?.webContents.send('playlists', _playlists.toString())
+  public send(_channel: string, _url: string): void {
+    console.log("sending stuff");
+    // @ts-ignore
+    this.window_.webContents.send(_channel, _url);
+    return;
   }
 
-  private create_() {
-    this.window_ = new BrowserWindow({
-      show: true,
+  private main_(): void {
+    main.window_ = new BrowserWindow({
       webPreferences: {
-        preload: path.join(__dirname, `./electron/preload.js`),
-      }
-    })
+        nodeIntegration: true,
+        contextIsolation: true,
+        preload: path.join(__dirname, "./electron/preload.js"),
+      },
+    });
 
-    this.window_.loadFile(path.join(__dirname, `./view/index.html`))
+    main.window_.loadFile(path.join(__dirname, "./view/index.html"));
 
-    this.window_.webContents.devToolsWebContents
+    ipcMain.on("spotify_response", (_event: IpcMainEvent, _code: string) => {
+      main.spotify_.resolveCode(_code);
+    });
+    ipcMain.on("youtube_response", (_event: IpcMainEvent, _code: string) => {});
 
-    async () => {
-      const server: http.Server = http.createServer(() => { });
-      server.listen(3000);
-      const spotify: Spotify = new Spotify();
-      await spotify.fetch();
+    console.log(`3: ${Spotify.tesmorts}`);
 
-      console.log(spotify.playlists.toString())
+    console.log(`?: ${this.test}`);
 
-      this.sendPlaylists(spotify.playlists);
-    }
-  }
-
-  private close_() {
-    if (process.platform !== 'darwin') app.quit();
-    return;
-  }
-
-  private activate_() {
-    if (!this.window_) this.create_()
-    return;
+    main.spotify_.init();
   }
 }
+const main: MainProcess = new MainProcess();
 
-const main: Main = new Main()
+export { MainProcess };

@@ -1,12 +1,6 @@
-import { IpcMainEvent, IpcRendererEvent, contextBridge, ipcRenderer } from 'electron'
-import { playlist } from '../types'
-import { IpcRequest } from './ipc/ipc-interfaces'
+import { ipcRenderer, contextBridge, IpcRendererEvent } from 'electron'
 
-interface test{
-  channelName:string
-  
-}
-
-contextBridge.exposeInMainWorld('electron', {
-  listener: (_callback:any) => {ipcRenderer.on('playlists', _callback)}
+contextBridge.exposeInMainWorld('api', {
+  spotify: (_callback: any) => { ipcRenderer.on('spotify', (_event: IpcRendererEvent, ..._url: any) => { _callback(_event, _url) }) },
+  response: (_code: string) => { ipcRenderer.send('spotify_response', _code) }
 })

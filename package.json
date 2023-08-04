@@ -5,9 +5,9 @@
   "scripts": {
     "cp": "@powershell -NoProfile -ExecutionPolicy Unrestricted -Command cp ./src/ ./build/ -Filter *.html -Recurse -Force",
     "rm": "@powershell -NoProfile -ExecutionPolicy Unrestricted -Command rm ./build/ -Recurse",
-    "build": "npm run rm && npm run cp && tsc -p ./src/ && tsc -p ./src/view/",
+    "build": "npm run rm && npm run cp && tsc -p ./src/",
     "electron": "electron ./build/main.js",
-    "start": "npm run build && npm electron"
+    "start": "npm run build && npm run electron"
   },
   "author": "IJJA3141",
   "license": "ISC",
