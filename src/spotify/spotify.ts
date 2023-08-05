@@ -1,25 +1,21 @@
 import { MainProcess } from "../main";
-import { playlist, client, token } from "../types";
+import { client, playlist } from "../types";
 
 class Spotify {
-  // public member
-  public resolveCode: any;
-  public static tesmorts: boolean = false;
-
-  // private member use *_
-  private main_: MainProcess;
-  private token_!: token;
-  private userId_!: string;
   public playlists: playlist[];
-  private offset_: number;
-  private client_: client;
 
-  // public methodes
+  private playlistPromise_: any;
+  private main_: MainProcess;
+  private client_: client;
+  private token_!: string;
+  private pResolveCode_: any;
+  private userId_!: string;
+  private offset_: number;
+
   public constructor(_main: MainProcess) {
-    Spotify.tesmorts = true;
     this.main_ = _main;
-    this.playlists = [];
     this.offset_ = 0;
+    this.playlists = [];
     this.client_ = {
       id: process.env.SPOTIFY_CLIENT_ID as string,
       secret: process.env.SPOTIFY_CLIENT_SECRET as string,
@@ -27,17 +23,16 @@ class Spotify {
   }
 
   public async init(): Promise<void> {
-    console.log("sending stuff");
-    this.main_.send(
-      "spotify",
+    let pCode: Promise<string> = new Promise<string>((_resolve) => {
+      this.pResolveCode_ = _resolve;
+    });
+
+    this.main_.open(
       `https://accounts.spotify.com/authorize?response_type=code&scope=playlist-read-private&redirect_uri=http://localhost:3000&client_id=${this.client_.id}`,
+      this.pResolveCode_,
     );
 
-    const code: string = (
-      await new Promise<string>((_resolve) => {
-        this.resolveCode = _resolve;
-      })
-    ).slice(28);
+    const code: string = (await pCode).slice(28);
 
     let res: Response = await fetch("https://accounts.spotify.com/api/token", {
       method: "POST",
@@ -56,7 +51,7 @@ class Spotify {
 
     this.token_ = await data.access_token;
 
-    res = await fetch("https://api.spotify.com./v1/me", {
+    res = await fetch("https://api.spotify.com/v1/me", {
       method: "GET",
       headers: { Authorization: `Bearer ${this.token_}` },
     });
@@ -64,16 +59,25 @@ class Spotify {
     data = await res.json();
     this.userId_ = data.id;
 
-    let finished: boolean = await this.getPlaylist_();
-    while (!finished) finished = await this.getPlaylist_();
+    this.playlist_();
 
     return new Promise<void>((_resolve) => {
-      _resolve();
+      this.playlistPromise_ = _resolve;
     });
   }
 
-  // private methodes use *_
-  private async getPlaylist_(): Promise<boolean> {
+  private async playlist_(): Promise<void> {
+    const res = await this.fetchPlaylist_();
+    if (res) this.playlist_();
+    else {
+      this.playlistPromise_();
+      return new Promise<void>((_resolve) => {
+        _resolve();
+      });
+    }
+  }
+
+  private async fetchPlaylist_(): Promise<boolean> {
     const res: Response = await fetch(
       `https://api.spotify.com/v1/users/${this.userId_}/playlists?limit=50&offset=${this.offset_}`,
       {
@@ -92,8 +96,6 @@ class Spotify {
         images: _playlist.images,
       });
     });
-
-    this.offset_ += 50;
 
     if (data.next === null || data.next === undefined || data.next === null)
       return false;

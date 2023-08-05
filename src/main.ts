@@ -1,34 +1,40 @@
-import { app, BrowserWindow, ipcMain, IpcMainEvent } from "electron";
+import { app, BrowserWindow, ipcMain, IpcMain, IpcMainEvent } from "electron";
 import path from "path";
+import dotenv from "dotenv";
 
 import Spotify from "./spotify/spotify";
 
-class MainProcess {
-  public test: string = "fjksda;fjdkl";
+dotenv.config({ path: path.join(__dirname, "../appdata/.env") });
 
-  public window_?: BrowserWindow;
-  public spotify_: Spotify;
-  //private youtue: youtube
+class MainProcess {
+  //@ts-ignore
+  public window: BrowserWindow;
+  public spotify: Spotify;
 
   public constructor() {
-    console.log(`1: ${Spotify.tesmorts}`);
-
-    this.spotify_ = new Spotify(this);
-
-    console.log(`2: ${Spotify.tesmorts}`);
+    this.spotify = new Spotify(this);
 
     app.on("ready", this.main_);
+
+    return;
   }
 
-  public send(_channel: string, _url: string): void {
-    console.log("sending stuff");
-    // @ts-ignore
-    this.window_.webContents.send(_channel, _url);
+  public open(_url: string, _resolve: any): void {
+    const win: BrowserWindow = new BrowserWindow();
+    win.loadURL(_url);
+
+    win.webContents.on("will-redirect", (_event: any) => {
+      _resolve(_event.url);
+      win.close();
+    });
+
+    win.show();
+
     return;
   }
 
   private main_(): void {
-    main.window_ = new BrowserWindow({
+    main.window = new BrowserWindow({
       webPreferences: {
         nodeIntegration: true,
         contextIsolation: true,
@@ -36,20 +42,14 @@ class MainProcess {
       },
     });
 
-    main.window_.loadFile(path.join(__dirname, "./view/index.html"));
+    main.window.loadFile(path.join(__dirname, "./view/index.html"));
 
-    ipcMain.on("spotify_response", (_event: IpcMainEvent, _code: string) => {
-      main.spotify_.resolveCode(_code);
+    main.spotify.init().then(() => {
+      console.log(main.spotify.playlists);
     });
-    ipcMain.on("youtube_response", (_event: IpcMainEvent, _code: string) => {});
-
-    console.log(`3: ${Spotify.tesmorts}`);
-
-    console.log(`?: ${this.test}`);
-
-    main.spotify_.init();
   }
 }
+
 const main: MainProcess = new MainProcess();
 
 export { MainProcess };
