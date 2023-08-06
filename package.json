@@ -3,9 +3,9 @@
   "version": "0.0.0",
   "description": "Spotify to youtube playlist converter",
   "scripts": {
-    "cp": "@powershell -NoProfile -ExecutionPolicy Unrestricted -Command cp ./src/ ./build/ -Filter *.html -Recurse -Force",
+    "cpf": "@powershell -NoProfile -ExecutionPolicy Unrestricted -Command cpf ./src/ ./build/ '*.css','*.html'",
     "rm": "@powershell -NoProfile -ExecutionPolicy Unrestricted -Command rm ./build/ -Recurse",
-    "build": "npm run rm && npm run cp && tsc -p ./src/",
+    "build": "npm run rm && npm run cpf && tsc -p ./src/",
     "electron": "electron ./build/main.js",
     "start": "npm run build && npm run electron"
   },

@@ -1,8 +1,9 @@
-import { app, BrowserWindow, ipcMain, IpcMain, IpcMainEvent } from "electron";
+import { app, BrowserWindow, ipcMain, IpcMainEvent } from "electron";
 import path from "path";
 import dotenv from "dotenv";
 
 import Spotify from "./spotify/spotify";
+import { track, playlist } from "./types";
 
 dotenv.config({ path: path.join(__dirname, "../appdata/.env") });
 
@@ -15,6 +16,7 @@ class MainProcess {
     this.spotify = new Spotify(this);
 
     app.on("ready", this.main_);
+    ipcMain.on("PlaylistSelectionResponse", this.handlePaylistSelection);
 
     return;
   }
@@ -33,7 +35,7 @@ class MainProcess {
     return;
   }
 
-  private main_(): void {
+  private async main_(): Promise<void> {
     main.window = new BrowserWindow({
       webPreferences: {
         nodeIntegration: true,
@@ -44,8 +46,24 @@ class MainProcess {
 
     main.window.loadFile(path.join(__dirname, "./view/index.html"));
 
-    main.spotify.init().then(() => {
-      console.log(main.spotify.playlists);
+    const playlists = await main.spotify.getPlaylists();
+    main.window.webContents.send("PlaylistsSendEvent", playlists);
+  }
+
+  private async handlePaylistSelection(
+    _event: IpcMainEvent,
+    _index: number,
+  ): Promise<void> {
+    const playlistPromise: Promise<playlist[]> = main.spotify.playlist(_index);
+    //const fsPromise: Promise<playlist>
+
+    let playlists: playlist[] = await playlistPromise;
+    //tracks: track[] = await fsPromise
+
+    console.log(playlists[_index].tracks);
+
+    return new Promise<void>((_resolve) => {
+      _resolve();
     });
   }
 }

@@ -1,5 +1,5 @@
 import { MainProcess } from "../main";
-import { client, playlist } from "../types";
+import { client, playlist, track } from "../types";
 
 class Spotify {
   public playlists: playlist[];
@@ -22,7 +22,7 @@ class Spotify {
     };
   }
 
-  public async init(): Promise<void> {
+  public async getPlaylists(): Promise<playlist[]> {
     let pCode: Promise<string> = new Promise<string>((_resolve) => {
       this.pResolveCode_ = _resolve;
     });
@@ -59,13 +59,74 @@ class Spotify {
     data = await res.json();
     this.userId_ = data.id;
 
-    this.playlist_();
+    let stop: boolean = false;
 
-    return new Promise<void>((_resolve) => {
-      this.playlistPromise_ = _resolve;
+    while (!stop) {
+      res = await fetch(
+        `https://api.spotify.com/v1/users/${this.userId_}/playlists?limit=50&offset=${this.offset_}`,
+        {
+          method: "GET",
+          headers: { Authorization: `Bearer ${this.token_}` },
+        },
+      );
+
+      const data = await res.json();
+
+      data.items.forEach((_playlist: any) => {
+        this.playlists.push({
+          id: _playlist.id,
+          name: _playlist.name,
+          owner: _playlist.owner.display_name,
+          images: _playlist.images,
+          tracks: [],
+        });
+      });
+
+      if (data.next === null || data.next === undefined) stop = true;
+    }
+
+    return new Promise<playlist[]>((_resolve) => {
+      _resolve(this.playlists);
     });
   }
 
+  public async playlist(_index: number): Promise<playlist[]> {
+    this.offset_ = 0;
+    let stop: boolean = false;
+    let res: Response;
+    let data: any;
+
+    while (!stop) {
+      res = await fetch(
+        `https://api.spotify.com/v1/playlists/${this.playlists[_index].id}/tracks?limit=50&offset=${this.offset_}`,
+        {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${this.token_}`,
+          },
+        },
+      );
+
+      data = await res.json();
+      data.items.forEach((_track: track): void => {
+        this.playlists[_index].tracks.push({
+          artist: _track.artist,
+          name: _track.name,
+          images: _track.images,
+        });
+      });
+
+      if (data.next === null || data.next === undefined) {
+        stop = true;
+        this.playlistPromise_(this.playlists);
+      }
+    }
+
+    return new Promise<playlist[]>((_resolve) => {
+      this.playlistPromise_ = _resolve;
+    });
+  }
+  /*
   private async playlist_(): Promise<void> {
     const res = await this.fetchPlaylist_();
     if (res) this.playlist_();
@@ -94,13 +155,13 @@ class Spotify {
         name: _playlist.name,
         owner: _playlist.owner.display_name,
         images: _playlist.images,
+        tracks: [],
       });
     });
 
-    if (data.next === null || data.next === undefined || data.next === null)
-      return false;
+    if (data.next === null || data.next === undefined) return false;
     else return true;
-  }
+  }*/
 }
 
 export default Spotify;
