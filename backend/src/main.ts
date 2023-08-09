@@ -44,7 +44,7 @@ class MainProcess {
       },
     });
 
-    main.window.loadFile(path.join(__dirname, "../html/index.html"));
+    main.window.loadFile(path.join(__dirname, "../../frontend/_.html"));
 
     const playlists = await main.spotify.getPlaylists();
     main.window.webContents.send("PlaylistsSendEvent", playlists);

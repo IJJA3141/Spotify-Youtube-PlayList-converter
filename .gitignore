@@ -1,3 +1,4 @@
-/node_modules/*
-/appdata/*
-build
+/backend/build/
+/backend/appdata/.env
+/backend/node_modules/
+/frontend/build/
